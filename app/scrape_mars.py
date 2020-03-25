@@ -33,8 +33,9 @@ def featured_image(driver):
 
     # create a new Chrome session
     driver = webdriver.Chrome()
-    driver.implicitly_wait(6)
+    #driver.implicitly_wait(6)
     driver.get(url)
+    driver.implicitly_wait(6)
     #browser.visit(url)
 
     #After opening the url above, Selenium clicks the specific agency link
@@ -78,19 +79,21 @@ def twitter_weather(browser):
     
     url = 'https://twitter.com/marswxreport?lang=en'
     browser.visit(url)
-    time.sleep(5)
+    time.sleep(7)
 
     html = browser.html
     weather_soup = BeautifulSoup(html, 'html.parser')
 
     mars_weather_tweet = weather_soup.find('div', attrs={'class' :'tweets', 'data-name' : 'Mars Weather'})
+    print(mars_weather_tweet) # findind the first tweet
 
     try:
         mars_weather = mars_weather_tweet.find('p', 'tweet-text').get_text()
+        print(mars_weather) # finding the weather
 
     except AttributeError:
         pattern = re.compile(r'sol')
-        mars_weather = weather_soup.find('span', text=pattern).text
+        mars_weather = weather_soup.find("span", text=pattern).text
     
     browser.quit()
     return mars_weather
